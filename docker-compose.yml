@@ -1,0 +1,23 @@
+services:
+  pdf-rs:
+    container_name: pdf-rs
+    env_file: .env
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        - USER_ID=${UID}
+        - GROUP_ID=${GID}
+    user: "${UID}:${GID}"
+    ports: 
+      - "${PORT}:${PORT}"
+    restart: unless-stopped
+    volumes:
+      - ./pdfs:/app
+    init: true
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
+
